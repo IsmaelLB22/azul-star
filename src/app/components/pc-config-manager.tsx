@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import {Plus, Edit, Trash2, Copy, FileDown, Search, ChevronDown, TreePalm} from 'lucide-react'
+import { Plus, Edit, Trash2, Copy, FileDown, Search, ChevronDown, TreePalmIcon as PalmTree, AlertTriangle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import PCConfigForm from './pc-config-form'
 
 // Types
@@ -57,6 +58,11 @@ export default function PCConfigManager() {
             }
             return total
         }, 0)
+    }
+
+    const isConfigComplete = (config: PCConfig) => {
+        const requiredComponents = ['motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard']
+        return requiredComponents.every(component => config[component].name && config[component].price > 0) && config.saleTarget > 0
     }
 
     const filteredConfigs = configs.filter(config =>
@@ -119,7 +125,7 @@ export default function PCConfigManager() {
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 className="text-5xl font-bold mb-8 text-center text-orange-900 flex items-center justify-center"
             >
-                <TreePalm className="mr-4 h-12 w-12 text-yellow-500" />
+                <PalmTree className="mr-4 h-12 w-12 text-yellow-500" />
                 Gestionnaire de Configurations PC Exotiques
             </motion.h1>
             <motion.div
@@ -174,6 +180,7 @@ export default function PCConfigManager() {
                                 <TableHead className="text-orange-900 font-bold">Prix Total</TableHead>
                                 <TableHead className="text-orange-900 font-bold">Objectif de Vente</TableHead>
                                 <TableHead className="text-orange-900 font-bold">Marge</TableHead>
+                                <TableHead className="text-orange-900 font-bold">Statut</TableHead>
                                 <TableHead className="text-orange-900 font-bold">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -182,6 +189,7 @@ export default function PCConfigManager() {
                                 {filteredConfigs.map(config => {
                                     const totalPrice = calculateTotalPrice(config)
                                     const margin = config.saleTarget - totalPrice
+                                    const isComplete = isConfigComplete(config)
                                     return (
                                         <motion.tr
                                             key={config.id}
@@ -196,6 +204,25 @@ export default function PCConfigManager() {
                                             <TableCell className="text-orange-800">{config.saleTarget.toFixed(2)} €</TableCell>
                                             <TableCell className={margin >= 0 ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
                                                 {margin.toFixed(2)} €
+                                            </TableCell>
+                                            <TableCell>
+                                                {isComplete ? (
+                                                    <span className="text-green-600 font-bold">Complète</span>
+                                                ) : (
+                                                    <TooltipProvider>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                <span className="text-red-600 font-bold flex items-center">
+                                  <AlertTriangle className="w-4 h-4 mr-1" />
+                                  Incomplète
+                                </span>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>
+                                                                <p>Cette configuration est incomplète. Veuillez remplir tous les champs requis.</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    </TooltipProvider>
+                                                )}
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex space-x-2">
@@ -248,6 +275,7 @@ export default function PCConfigManager() {
                                     className="space-y-4 text-orange-800"
                                 >
                                     <p className="text-lg"><span className="font-bold">Nombre total de configurations :</span> {configs.length}</p>
+                                    <p className="text-lg"><span className="font-bold">Configurations complètes :</span> {configs.filter(isConfigComplete).length}</p>
                                     <p className="text-lg"><span className="font-bold">Prix moyen des configurations :</span> {
                                         (configs.reduce((sum, config) => sum + calculateTotalPrice(config), 0) / configs.length || 0).toFixed(2)
                                     } €</p>
