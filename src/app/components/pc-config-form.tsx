@@ -231,40 +231,46 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md max-h-[80vh] overflow-y-auto sm:max-h-none sm:overflow-y-visible">
-            <div className="text-center mb-6">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md max-h-[80vh] overflow-y-auto sm:max-h-none sm:overflow-y-visible hide-scrollbar lg:flex lg:flex-col">
+            <div className="text-center mb-6 lg:text-left">
                 <h2 className="text-3xl font-bold text-blue-900 mb-2">Configuration PC</h2>
                 <p className="text-blue-600">Étape {currentStep + 1} sur {componentOrder.length}</p>
             </div>
-            <div className="flex flex-nowrap justify-start gap-2 mb-6 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center">
-                {componentOrder.map((step, index) => {
-                    const Icon = componentIcons[step]
-                    return (
-                        <Button
-                            key={step}
-                            type="button"
-                            onClick={() => {
-                                setCurrentStep(index)
-                                scrollToButton(index)
-                            }}
-                            ref={el => buttonRefs.current[index] = el}
-                            variant={currentStep === index ? "default" : "outline"}
-                            className={`transition-all duration-300 flex-shrink-0 ${
-                                currentStep === index
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-white text-blue-600 hover:bg-blue-50"
-                            }`}
-                        >
-                            <Icon className="w-5 h-5 mr-1" />
-                            <span className="hidden sm:inline">{step.charAt(0).toUpperCase() + step.slice(1)}</span>
-                        </Button>
-                    )
-                })}
+            <div className="lg:flex lg:space-x-6">
+                <div className="lg:w-1/3">
+                    <div className="flex flex-nowrap lg:flex-col justify-start gap-2 mb-6 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center hide-scrollbar">
+                        {componentOrder.map((step, index) => {
+                            const Icon = componentIcons[step]
+                            return (
+                                <Button
+                                    key={step}
+                                    type="button"
+                                    onClick={() => {
+                                        setCurrentStep(index)
+                                        scrollToButton(index)
+                                    }}
+                                    ref={el => buttonRefs.current[index] = el}
+                                    variant={currentStep === index ? "default" : "outline"}
+                                    className={`transition-all duration-300 flex-shrink-0 lg:w-full ${
+                                        currentStep === index
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-white text-blue-600 hover:bg-blue-50"
+                                    }`}
+                                >
+                                    <Icon className="w-5 h-5 mr-1" />
+                                    <span className="hidden sm:inline">{step.charAt(0).toUpperCase() + step.slice(1)}</span>
+                                </Button>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="lg:w-2/3">
+                    <AnimatePresence mode="wait">
+                        {renderStep(componentOrder[currentStep])}
+                    </AnimatePresence>
+                </div>
             </div>
-            <AnimatePresence mode="wait">
-                {renderStep(componentOrder[currentStep])}
-            </AnimatePresence>
-            <div className="bg-blue-50 p-4 rounded-lg shadow-inner">
+            <div className="mt-6 bg-blue-50 p-4 rounded-lg shadow-inner">
                 <p className="text-blue-800 font-semibold">Prix total: {totalPrice.toFixed(2)} €</p>
                 <p className="text-blue-800 font-semibold">Objectif de vente: {formData.saleTarget.toFixed(2)} €</p>
                 <p className={`font-bold ${margin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -300,3 +306,4 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
         </form>
     )
 }
+
