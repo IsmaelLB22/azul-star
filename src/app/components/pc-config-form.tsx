@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -54,6 +54,23 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
         }
     )
     const [currentStep, setCurrentStep] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [margin, setMargin] = useState(0)
+
+    useEffect(() => {
+        const newTotalPrice = calculateTotalPrice(formData)
+        setTotalPrice(newTotalPrice)
+        setMargin(formData.saleTarget - newTotalPrice)
+    }, [formData])
+
+    const calculateTotalPrice = (config: PCConfig) => {
+        return Object.values(config).reduce((total, component) => {
+            if (typeof component === 'object' && 'price' in component) {
+                return total + component.price
+            }
+            return total
+        }, 0)
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: string) => {
         const { name, value } = e.target
@@ -193,6 +210,13 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
             <AnimatePresence mode="wait">
                 {renderStep(componentOrder[currentStep])}
             </AnimatePresence>
+            <div className="bg-orange-100 p-4 rounded-lg shadow-inner">
+                <p className="text-orange-800 font-semibold">Prix total: {totalPrice.toFixed(2)} €</p>
+                <p className="text-orange-800 font-semibold">Objectif de vente: {formData.saleTarget.toFixed(2)} €</p>
+                <p className={`font-bold ${margin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    Marge: {margin.toFixed(2)} €
+                </p>
+            </div>
             <div className="flex justify-between mt-8">
                 <Button
                     type="button"
