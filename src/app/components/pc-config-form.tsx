@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 type Component = {
     name: string
@@ -73,45 +75,77 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-                <Label htmlFor="name">Nom de la configuration</Label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Label htmlFor="name" className="text-lg font-semibold">Nom de la configuration</Label>
                 <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    className="mt-1 w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
                 />
-            </div>
-            {['motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard'].map((component) => (
-                <div key={component} className="space-y-2">
-                    <Label>{component.charAt(0).toUpperCase() + component.slice(1)}</Label>
-                    <Input
-                        name="name"
-                        placeholder="Nom"
-                        value={formData[component].name}
-                        onChange={(e) => handleChange(e, component)}
-                        required
-                    />
-                    <Input
-                        name="price"
-                        type="number"
-                        placeholder="Prix"
-                        value={formData[component].price}
-                        onChange={(e) => handleChange(e, component)}
-                        required
-                    />
-                    <Textarea
-                        name="notes"
-                        placeholder="Notes"
-                        value={formData[component].notes || ''}
-                        onChange={(e) => handleChange(e, component)}
-                    />
-                </div>
+            </motion.div>
+            {['motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard'].map((component, index) => (
+                <motion.div
+                    key={component}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                    <Card className="overflow-hidden">
+                        <CardHeader>
+                            <CardTitle className="text-lg">{component.charAt(0).toUpperCase() + component.slice(1)}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div>
+                                <Label htmlFor={`${component}-name`}>Nom</Label>
+                                <Input
+                                    id={`${component}-name`}
+                                    name="name"
+                                    value={formData[component].name}
+                                    onChange={(e) => handleChange(e, component)}
+                                    required
+                                    className="mt-1 w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor={`${component}-price`}>Prix</Label>
+                                <Input
+                                    id={`${component}-price`}
+                                    name="price"
+                                    type="number"
+                                    value={formData[component].price}
+                                    onChange={(e) => handleChange(e, component)}
+                                    required
+                                    className="mt-1 w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor={`${component}-notes`}>Notes</Label>
+                                <Textarea
+                                    id={`${component}-notes`}
+                                    name="notes"
+                                    value={formData[component].notes || ''}
+                                    onChange={(e) => handleChange(e, component)}
+                                    className="mt-1 w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
             ))}
-            <div>
-                <Label htmlFor="saleTarget">Objectif de vente</Label>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+            >
+                <Label htmlFor="saleTarget" className="text-lg font-semibold">Objectif de vente</Label>
                 <Input
                     id="saleTarget"
                     name="saleTarget"
@@ -119,12 +153,22 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     value={formData.saleTarget}
                     onChange={handleChange}
                     required
+                    className="mt-1 w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
                 />
-            </div>
-            <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={onCancel}>Annuler</Button>
-                <Button type="submit">Enregistrer</Button>
-            </div>
+            </motion.div>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
+                className="flex justify-end space-x-4"
+            >
+                <Button type="button" variant="outline" onClick={onCancel} className="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    Annuler
+                </Button>
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300">
+                    Enregistrer
+                </Button>
+            </motion.div>
         </form>
     )
 }
