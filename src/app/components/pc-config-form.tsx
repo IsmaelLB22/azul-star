@@ -215,12 +215,12 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md max-h-[80vh] overflow-y-auto sm:max-h-none sm:overflow-y-visible">
             <div className="text-center mb-6">
                 <h2 className="text-3xl font-bold text-blue-900 mb-2">Configuration PC</h2>
                 <p className="text-blue-600">Étape {currentStep + 1} sur {componentOrder.length}</p>
             </div>
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            <div className="flex flex-nowrap justify-start gap-2 mb-6 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center">
                 {componentOrder.map((step, index) => {
                     const Icon = componentIcons[step]
                     return (
@@ -229,14 +229,14 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                             type="button"
                             onClick={() => setCurrentStep(index)}
                             variant={currentStep === index ? "default" : "outline"}
-                            className={`transition-all duration-300 ${
+                            className={`transition-all duration-300 flex-shrink-0 ${
                                 currentStep === index
                                     ? "bg-blue-600 text-white"
                                     : "bg-white text-blue-600 hover:bg-blue-50"
                             }`}
                         >
                             <Icon className="w-5 h-5 mr-1" />
-                            {step.charAt(0).toUpperCase() + step.slice(1)}
+                            <span className="hidden sm:inline">{step.charAt(0).toUpperCase() + step.slice(1)}</span>
                         </Button>
                     )
                 })}
@@ -251,19 +251,19 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     Marge: {margin.toFixed(2)} €
                 </p>
             </div>
-            <div className="flex justify-between mt-8">
+            <div className="flex justify-between mt-8 flex-col sm:flex-row gap-4">
                 <Button
                     type="button"
                     onClick={prevStep}
                     disabled={currentStep === 0}
-                    className="bg-blue-100 hover:bg-blue-200 text-blue-800 transition-all duration-300"
+                    className="w-full sm:w-auto bg-blue-100 hover:bg-blue-200 text-blue-800 transition-all duration-300"
                 >
                     <ChevronLeft className="mr-2 h-4 w-4" /> Précédent
                 </Button>
                 {currentStep === componentOrder.length - 1 ? (
                     <Button
                         type="submit"
-                        className="bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
+                        className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
                     >
                         Enregistrer
                     </Button>
@@ -271,7 +271,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     <Button
                         type="button"
                         onClick={nextStep}
-                        className="bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
+                        className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
                     >
                         Suivant <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>

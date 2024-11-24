@@ -117,7 +117,7 @@ export default function PCConfigManager() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen bg-white p-4 sm:p-6 md:p-8"
+            className="min-h-screen bg-white p-4 sm:p-6 md:p-8 overflow-x-hidden"
         >
             <motion.h1
                 initial={{ y: -50 }}
@@ -132,13 +132,13 @@ export default function PCConfigManager() {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0 sm:space-x-4"
+                className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0 sm:space-x-4"
             >
                 <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
                     <DialogTrigger asChild>
                         <Button
                             onClick={() => setEditingConfig(null)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+                            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
                         >
                             <Plus className="mr-2 h-4 w-4" /> Nouvelle Configuration
                         </Button>
@@ -154,13 +154,13 @@ export default function PCConfigManager() {
                         />
                     </DialogContent>
                 </Dialog>
-                <div className="flex items-center w-full sm:w-auto">
+                <div className="flex items-center w-full">
                     <Input
                         type="text"
                         placeholder="Rechercher..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="mr-2 bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                        className="mr-2 flex-grow bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                     />
                     <Button variant="outline" className="bg-white hover:bg-blue-100 text-blue-600 border-blue-300 transition-all duration-300">
                         <Search className="h-4 w-4" />
@@ -226,7 +226,7 @@ export default function PCConfigManager() {
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div className="flex flex-wrap justify-start space-x-2 space-y-2">
+                                                    <div className="flex flex-col sm:flex-row sm:flex-wrap justify-start space-y-2 sm:space-y-0 sm:space-x-2">
                                                         <Button variant="ghost" size="icon" onClick={() => handleEdit(config)} className="hover:bg-blue-100 text-blue-600 transition-colors duration-300">
                                                             <Edit className="h-4 w-4" />
                                                         </Button>
