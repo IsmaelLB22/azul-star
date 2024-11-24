@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -117,22 +117,22 @@ export default function PCConfigManager() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen bg-gradient-to-br from-orange-400 to-yellow-200 p-8"
+            className="min-h-screen bg-gradient-to-br from-orange-400 to-yellow-200 p-4 sm:p-6 md:p-8"
         >
             <motion.h1
                 initial={{ y: -50 }}
                 animate={{ y: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="text-5xl font-bold mb-8 text-center text-orange-900 flex items-center justify-center"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-center text-orange-900 flex flex-col sm:flex-row items-center justify-center"
             >
-                <PalmTree className="mr-4 h-12 w-12 text-yellow-500" />
-                Gestionnaire de Configurations PC Exotiques
+                <PalmTree className="mb-2 sm:mb-0 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-yellow-500" />
+                <span>Gestionnaire de Configurations PC Exotiques</span>
             </motion.h1>
             <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex justify-between mb-6"
+                className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0 sm:space-x-4"
             >
                 <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
                     <DialogTrigger asChild>
@@ -173,79 +173,81 @@ export default function PCConfigManager() {
                 transition={{ delay: 0.4 }}
             >
                 <Card className="overflow-hidden shadow-2xl bg-orange-100">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="bg-orange-300">
-                                <TableHead className="text-orange-900 font-bold">Nom</TableHead>
-                                <TableHead className="text-orange-900 font-bold">Prix Total</TableHead>
-                                <TableHead className="text-orange-900 font-bold">Objectif de Vente</TableHead>
-                                <TableHead className="text-orange-900 font-bold">Marge</TableHead>
-                                <TableHead className="text-orange-900 font-bold">Statut</TableHead>
-                                <TableHead className="text-orange-900 font-bold">Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            <AnimatePresence>
-                                {filteredConfigs.map(config => {
-                                    const totalPrice = calculateTotalPrice(config)
-                                    const margin = config.saleTarget - totalPrice
-                                    const isComplete = isConfigComplete(config)
-                                    return (
-                                        <motion.tr
-                                            key={config.id}
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="bg-orange-50 hover:bg-yellow-100 transition-colors duration-300"
-                                        >
-                                            <TableCell className="font-medium text-orange-900">{config.name}</TableCell>
-                                            <TableCell className="text-orange-800">{totalPrice.toFixed(2)} €</TableCell>
-                                            <TableCell className="text-orange-800">{config.saleTarget.toFixed(2)} €</TableCell>
-                                            <TableCell className={margin >= 0 ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
-                                                {margin.toFixed(2)} €
-                                            </TableCell>
-                                            <TableCell>
-                                                {isComplete ? (
-                                                    <span className="text-green-600 font-bold">Complète</span>
-                                                ) : (
-                                                    <TooltipProvider>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                <span className="text-red-600 font-bold flex items-center">
-                                  <AlertTriangle className="w-4 h-4 mr-1" />
-                                  Incomplète
-                                </span>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent>
-                                                                <p>Cette configuration est incomplète. Veuillez remplir tous les champs requis.</p>
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex space-x-2">
-                                                    <Button variant="ghost" size="icon" onClick={() => handleEdit(config)} className="hover:bg-yellow-200 text-orange-700 transition-colors duration-300">
-                                                        <Edit className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleDelete(config.id)} className="hover:bg-red-200 text-red-700 transition-colors duration-300">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleDuplicate(config)} className="hover:bg-green-200 text-green-700 transition-colors duration-300">
-                                                        <Copy className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleExport(config)} className="hover:bg-blue-200 text-blue-700 transition-colors duration-300">
-                                                        <FileDown className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </motion.tr>
-                                    )
-                                })}
-                            </AnimatePresence>
-                        </TableBody>
-                    </Table>
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-orange-300">
+                                    <TableHead className="text-orange-900 font-bold">Nom</TableHead>
+                                    <TableHead className="text-orange-900 font-bold">Prix Total</TableHead>
+                                    <TableHead className="text-orange-900 font-bold">Objectif de Vente</TableHead>
+                                    <TableHead className="text-orange-900 font-bold">Marge</TableHead>
+                                    <TableHead className="text-orange-900 font-bold">Statut</TableHead>
+                                    <TableHead className="text-orange-900 font-bold">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <AnimatePresence>
+                                    {filteredConfigs.map(config => {
+                                        const totalPrice = calculateTotalPrice(config)
+                                        const margin = config.saleTarget - totalPrice
+                                        const isComplete = isConfigComplete(config)
+                                        return (
+                                            <motion.tr
+                                                key={config.id}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.3 }}
+                                                className="bg-orange-50 hover:bg-yellow-100 transition-colors duration-300"
+                                            >
+                                                <TableCell className="font-medium text-orange-900">{config.name}</TableCell>
+                                                <TableCell className="text-orange-800">{totalPrice.toFixed(2)} €</TableCell>
+                                                <TableCell className="text-orange-800">{config.saleTarget.toFixed(2)} €</TableCell>
+                                                <TableCell className={margin >= 0 ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
+                                                    {margin.toFixed(2)} €
+                                                </TableCell>
+                                                <TableCell>
+                                                    {isComplete ? (
+                                                        <span className="text-green-600 font-bold">Complète</span>
+                                                    ) : (
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                  <span className="text-red-600 font-bold flex items-center cursor-help">
+                                    <AlertTriangle className="w-4 h-4 mr-1" />
+                                    Incomplète
+                                  </span>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Cette configuration est incomplète. Veuillez remplir tous les champs requis.</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex flex-wrap justify-start space-x-2 space-y-2">
+                                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(config)} className="hover:bg-yellow-200 text-orange-700 transition-colors duration-300">
+                                                            <Edit className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(config.id)} className="hover:bg-red-200 text-red-700 transition-colors duration-300">
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleDuplicate(config)} className="hover:bg-green-200 text-green-700 transition-colors duration-300">
+                                                            <Copy className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleExport(config)} className="hover:bg-blue-200 text-blue-700 transition-colors duration-300">
+                                                            <FileDown className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </motion.tr>
+                                        )
+                                    })}
+                                </AnimatePresence>
+                            </TableBody>
+                        </Table>
+                    </div>
                 </Card>
             </motion.div>
             <motion.div
