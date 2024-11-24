@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -69,12 +69,17 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     const [currentStep, setCurrentStep] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [margin, setMargin] = useState(0)
+    const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
     useEffect(() => {
         const newTotalPrice = calculateTotalPrice(formData)
         setTotalPrice(newTotalPrice)
         setMargin(formData.saleTarget - newTotalPrice)
     }, [formData])
+
+    useEffect(() => {
+        scrollToButton(currentStep);
+    }, [currentStep]);
 
     const calculateTotalPrice = (config: PCConfig) => {
         return Object.values(config).reduce((total, component) => {
@@ -110,6 +115,17 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
 
     const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, componentOrder.length - 1))
     const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0))
+
+    const scrollToButton = (index: number) => {
+        const button = buttonRefs.current[index];
+        if (button) {
+            button.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center'
+            });
+        }
+    };
 
     const renderStep = (step: string) => {
         if (step === 'name') {
@@ -227,7 +243,11 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                         <Button
                             key={step}
                             type="button"
-                            onClick={() => setCurrentStep(index)}
+                            onClick={() => {
+                                setCurrentStep(index)
+                                scrollToButton(index)
+                            }}
+                            ref={el => buttonRefs.current[index] = el}
                             variant={currentStep === index ? "default" : "outline"}
                             className={`transition-all duration-300 flex-shrink-0 ${
                                 currentStep === index
