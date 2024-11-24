@@ -117,15 +117,15 @@ export default function PCConfigManager() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 p-4 sm:p-6 md:p-8"
+            className="min-h-screen bg-white p-4 sm:p-6 md:p-8"
         >
             <motion.h1
                 initial={{ y: -50 }}
                 animate={{ y: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-center text-white flex flex-col sm:flex-row items-center justify-center"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-center text-blue-900 flex flex-col sm:flex-row items-center justify-center"
             >
-                <Cpu className="mb-2 sm:mb-0 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-blue-300" />
+                <Cpu className="mb-2 sm:mb-0 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-blue-600" />
                 <span>Gestionnaire de Configurations PC</span>
             </motion.h1>
             <motion.div
@@ -138,14 +138,14 @@ export default function PCConfigManager() {
                     <DialogTrigger asChild>
                         <Button
                             onClick={() => setEditingConfig(null)}
-                            className="bg-blue-500 hover:bg-blue-600 text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+                            className="bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
                         >
                             <Plus className="mr-2 h-4 w-4" /> Nouvelle Configuration
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px] bg-blue-900 text-white">
+                    <DialogContent className="sm:max-w-[600px] bg-white">
                         <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold">{editingConfig ? 'Modifier' : 'Ajouter'} une configuration</DialogTitle>
+                            <DialogTitle className="text-2xl font-bold text-blue-900">{editingConfig ? 'Modifier' : 'Ajouter'} une configuration</DialogTitle>
                         </DialogHeader>
                         <PCConfigForm
                             config={editingConfig}
@@ -160,9 +160,9 @@ export default function PCConfigManager() {
                         placeholder="Rechercher..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="mr-2 bg-blue-800 text-white placeholder-blue-300 border-blue-600 focus:border-blue-400 focus:ring-blue-400 transition-all duration-300"
+                        className="mr-2 bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                     />
-                    <Button variant="outline" className="bg-blue-700 hover:bg-blue-600 text-white border-blue-500 transition-all duration-300">
+                    <Button variant="outline" className="bg-white hover:bg-blue-100 text-blue-600 border-blue-300 transition-all duration-300">
                         <Search className="h-4 w-4" />
                     </Button>
                 </div>
@@ -172,17 +172,17 @@ export default function PCConfigManager() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
             >
-                <Card className="overflow-hidden shadow-2xl bg-blue-800 bg-opacity-50 backdrop-blur-md">
+                <Card className="overflow-hidden shadow-lg bg-white">
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-b border-blue-700">
-                                    <TableHead className="text-blue-200 font-bold">Nom</TableHead>
-                                    <TableHead className="text-blue-200 font-bold">Prix Total</TableHead>
-                                    <TableHead className="text-blue-200 font-bold">Objectif de Vente</TableHead>
-                                    <TableHead className="text-blue-200 font-bold">Marge</TableHead>
-                                    <TableHead className="text-blue-200 font-bold">Statut</TableHead>
-                                    <TableHead className="text-blue-200 font-bold">Actions</TableHead>
+                                <TableRow className="bg-blue-50">
+                                    <TableHead className="text-blue-900 font-bold">Nom</TableHead>
+                                    <TableHead className="text-blue-900 font-bold">Prix Total</TableHead>
+                                    <TableHead className="text-blue-900 font-bold">Objectif de Vente</TableHead>
+                                    <TableHead className="text-blue-900 font-bold">Marge</TableHead>
+                                    <TableHead className="text-blue-900 font-bold">Statut</TableHead>
+                                    <TableHead className="text-blue-900 font-bold">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -198,22 +198,22 @@ export default function PCConfigManager() {
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                                 transition={{ duration: 0.3 }}
-                                                className="border-b border-blue-700 hover:bg-blue-700 hover:bg-opacity-50 transition-colors duration-300"
+                                                className="border-b border-blue-100 hover:bg-blue-50 transition-colors duration-300"
                                             >
-                                                <TableCell className="font-medium text-blue-100">{config.name}</TableCell>
-                                                <TableCell className="text-blue-200">{totalPrice.toFixed(2)} €</TableCell>
-                                                <TableCell className="text-blue-200">{config.saleTarget.toFixed(2)} €</TableCell>
-                                                <TableCell className={margin >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>
+                                                <TableCell className="font-medium text-blue-900">{config.name}</TableCell>
+                                                <TableCell className="text-blue-800">{totalPrice.toFixed(2)} €</TableCell>
+                                                <TableCell className="text-blue-800">{config.saleTarget.toFixed(2)} €</TableCell>
+                                                <TableCell className={margin >= 0 ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
                                                     {margin.toFixed(2)} €
                                                 </TableCell>
                                                 <TableCell>
                                                     {isComplete ? (
-                                                        <span className="text-green-400 font-bold">Complète</span>
+                                                        <span className="text-green-600 font-bold">Complète</span>
                                                     ) : (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
-                                  <span className="text-red-400 font-bold flex items-center cursor-help">
+                                  <span className="text-red-600 font-bold flex items-center cursor-help">
                                     <AlertTriangle className="w-4 h-4 mr-1" />
                                     Incomplète
                                   </span>
@@ -227,16 +227,16 @@ export default function PCConfigManager() {
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-wrap justify-start space-x-2 space-y-2">
-                                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(config)} className="hover:bg-blue-600 text-blue-300 transition-colors duration-300">
+                                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(config)} className="hover:bg-blue-100 text-blue-600 transition-colors duration-300">
                                                             <Edit className="h-4 w-4" />
                                                         </Button>
-                                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(config.id)} className="hover:bg-red-600 text-red-300 transition-colors duration-300">
+                                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(config.id)} className="hover:bg-red-100 text-red-600 transition-colors duration-300">
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
-                                                        <Button variant="ghost" size="icon" onClick={() => handleDuplicate(config)} className="hover:bg-green-600 text-green-300 transition-colors duration-300">
+                                                        <Button variant="ghost" size="icon" onClick={() => handleDuplicate(config)} className="hover:bg-green-100 text-green-600 transition-colors duration-300">
                                                             <Copy className="h-4 w-4" />
                                                         </Button>
-                                                        <Button variant="ghost" size="icon" onClick={() => handleExport(config)} className="hover:bg-yellow-600 text-yellow-300 transition-colors duration-300">
+                                                        <Button variant="ghost" size="icon" onClick={() => handleExport(config)} className="hover:bg-yellow-100 text-yellow-600 transition-colors duration-300">
                                                             <FileDown className="h-4 w-4" />
                                                         </Button>
                                                     </div>
@@ -258,23 +258,23 @@ export default function PCConfigManager() {
             >
                 <Collapsible open={isStatsOpen} onOpenChange={setIsStatsOpen}>
                     <CollapsibleTrigger asChild>
-                        <Button variant="outline" className="w-full flex justify-between items-center bg-blue-700 hover:bg-blue-600 text-white border-blue-500 transition-all duration-300">
+                        <Button variant="outline" className="w-full flex justify-between items-center bg-white hover:bg-blue-50 text-blue-600 border-blue-300 transition-all duration-300">
                             <span>Statistiques Globales</span>
                             <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isStatsOpen ? 'transform rotate-180' : ''}`} />
                         </Button>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                        <Card className="mt-4 bg-blue-800 bg-opacity-50 backdrop-blur-md shadow-xl text-white">
+                        <Card className="mt-4 bg-white shadow-lg">
                             <CardHeader>
-                                <CardTitle className="text-2xl">Aperçu des données</CardTitle>
-                                <CardDescription className="text-blue-300">Statistiques sur toutes les configurations</CardDescription>
+                                <CardTitle className="text-2xl text-blue-900">Aperçu des données</CardTitle>
+                                <CardDescription className="text-blue-600">Statistiques sur toutes les configurations</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2, duration: 0.5 }}
-                                    className="space-y-4 text-blue-100"
+                                    className="space-y-4 text-blue-800"
                                 >
                                     <p className="text-lg"><span className="font-bold">Nombre total de configurations :</span> {configs.length}</p>
                                     <p className="text-lg"><span className="font-bold">Configurations complètes :</span> {configs.filter(isConfigComplete).length}</p>
