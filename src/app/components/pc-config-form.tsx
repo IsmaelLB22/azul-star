@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronRight, ChevronLeft } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Tag, CircuitBoardIcon as Motherboard, Box, Zap, MemoryStickIcon as Memory, Cpu, HardDrive, Database, CpuIcon as Gpu, DollarSign } from 'lucide-react'
 
 type Component = {
     name: string
@@ -36,6 +36,19 @@ type PCConfigFormProps = {
 }
 
 const componentOrder = ['name', 'motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard', 'saleTarget']
+
+const componentIcons = {
+    name: Tag,
+    motherboard: Motherboard,
+    case: Box,
+    powerSupply: Zap,
+    ram: Memory,
+    cpu: Cpu,
+    ssd: HardDrive,
+    hdd: Database,
+    graphicsCard: Gpu,
+    saleTarget: DollarSign
+}
 
 export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormProps) {
     const [formData, setFormData] = useState<PCConfig>(
@@ -206,6 +219,27 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
             <div className="text-center mb-6">
                 <h2 className="text-3xl font-bold text-white mb-2">Configuration PC</h2>
                 <p className="text-yellow-100">Étape {currentStep + 1} sur {componentOrder.length}</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {componentOrder.map((step, index) => {
+                    const Icon = componentIcons[step]
+                    return (
+                        <Button
+                            key={step}
+                            type="button"
+                            onClick={() => setCurrentStep(index)}
+                            variant={currentStep === index ? "default" : "outline"}
+                            className={`transition-all duration-300 ${
+                                currentStep === index
+                                    ? "bg-yellow-500 text-orange-900"
+                                    : "bg-orange-100 text-orange-700 hover:bg-yellow-200"
+                            }`}
+                        >
+                            <Icon className="w-5 h-5 mr-1" />
+                            {step.charAt(0).toUpperCase() + step.slice(1)}
+                        </Button>
+                    )
+                })}
             </div>
             <AnimatePresence mode="wait">
                 {renderStep(componentOrder[currentStep])}
