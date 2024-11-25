@@ -73,18 +73,18 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
 
     useEffect(() => {
         const newTotalPrice = calculateTotalPrice(formData)
-        setTotalPrice(newTotalPrice)
-        setMargin(formData.saleTarget - newTotalPrice)
+        setTotalPrice(Number(newTotalPrice))
+        setMargin(Number(formData.saleTarget) - Number(newTotalPrice))
     }, [formData])
 
     useEffect(() => {
         scrollToButton(currentStep);
     }, [currentStep]);
 
-    const calculateTotalPrice = (config: PCConfig) => {
+    const calculateTotalPrice = (config: PCConfig): Component | string | number => {
         return Object.values(config).reduce((total, component) => {
-            if (typeof component === 'object' && 'price' in component) {
-                return total + component.price
+            if (typeof component === 'object' && component !== null && 'price' in component) {
+                return total + Number(component.price)
             }
             return total
         }, 0)
@@ -258,8 +258,10 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                         setCurrentStep(index)
                                         scrollToButton(index)
                                     }}
-                                    ref={el => buttonRefs.current[index] = el}
-                                    variant={currentStep === index ? "default" : "outline"}
+                                    ref={(el: HTMLButtonElement | null) => {
+                                        buttonRefs.current[index] = el
+                                    }}
+                                    variant={currentStep === index ? ("default" as const) : ("outline" as const)}
                                     className={`transition-all duration-300 flex-shrink-0 lg:w-full text-sm ${
                                         currentStep === index
                                             ? "bg-blue-600 text-white"
@@ -315,4 +317,3 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
         </form>
     )
 }
-
