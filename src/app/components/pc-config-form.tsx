@@ -81,13 +81,15 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
         scrollToButton(currentStep);
     }, [currentStep]);
 
-    const calculateTotalPrice = (config: PCConfig): Component | string | number => {
+    const calculateTotalPrice = (config: PCConfig): number => {
         return Object.values(config).reduce((total, component) => {
             if (typeof component === 'object' && component !== null && 'price' in component) {
-                return total + Number(component.price)
+                const price = Number((component as { price: string | number }).price);
+                return total + (isNaN(price) ? 0 : price);
             }
-            return total
-        }, 0)
+            return total;
+        }, 0) as number;
+
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: string) => {
