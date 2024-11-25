@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronRight, ChevronLeft, Tag, CircuitBoardIcon as Motherboard, Box, Zap, MemoryStickIcon as Memory, Cpu, HardDrive, Database, CpuIcon as Gpu, DollarSign } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Tag, CircuitBoardIcon as Motherboard, Box, Zap, MemoryStickIcon as Memory, Cpu, HardDrive, Database, CpuIcon as Gpu, DollarSign, X } from 'lucide-react'
 
 type Component = {
     name: string
@@ -136,16 +136,16 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.5 }}
-                    className="space-y-4"
+                    className="space-y-2"
                 >
-                    <Label htmlFor="name" className="text-xl font-semibold text-blue-900">Nom de la configuration</Label>
+                    <Label htmlFor="name" className="text-sm font-semibold text-blue-900">Nom de la configuration</Label>
                     <Input
                         id="name"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                        className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                         placeholder="Entrez le nom de votre configuration"
                     />
                 </motion.div>
@@ -158,9 +158,9 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.5 }}
-                    className="space-y-4"
+                    className="space-y-2"
                 >
-                    <Label htmlFor="saleTarget" className="text-xl font-semibold text-blue-900">Objectif de vente</Label>
+                    <Label htmlFor="saleTarget" className="text-sm font-semibold text-blue-900">Objectif de vente</Label>
                     <Input
                         id="saleTarget"
                         name="saleTarget"
@@ -168,7 +168,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                         value={formData.saleTarget}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                        className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                         placeholder="Entrez l'objectif de vente"
                     />
                 </motion.div>
@@ -183,24 +183,24 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                     transition={{ duration: 0.5 }}
                 >
                     <Card className="overflow-hidden bg-white shadow-md">
-                        <CardHeader className="bg-blue-50">
-                            <CardTitle className="text-xl text-blue-900">{step.charAt(0).toUpperCase() + step.slice(1)}</CardTitle>
+                        <CardHeader className="bg-blue-50 py-2">
+                            <CardTitle className="text-lg text-blue-900">{step.charAt(0).toUpperCase() + step.slice(1)}</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4 p-6">
+                        <CardContent className="space-y-2 p-4">
                             <div>
-                                <Label htmlFor={`${step}-name`} className="text-blue-800">Nom</Label>
+                                <Label htmlFor={`${step}-name`} className="text-sm text-blue-800">Nom</Label>
                                 <Input
                                     id={`${step}-name`}
                                     name="name"
                                     value={formData[step].name}
                                     onChange={(e) => handleChange(e, step)}
                                     required
-                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                                     placeholder={`Nom du ${step}`}
                                 />
                             </div>
                             <div>
-                                <Label htmlFor={`${step}-price`} className="text-blue-800">Prix</Label>
+                                <Label htmlFor={`${step}-price`} className="text-sm text-blue-800">Prix</Label>
                                 <Input
                                     id={`${step}-price`}
                                     name="price"
@@ -208,18 +208,18 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                     value={formData[step].price}
                                     onChange={(e) => handleChange(e, step)}
                                     required
-                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                                     placeholder={`Prix du ${step}`}
                                 />
                             </div>
                             <div>
-                                <Label htmlFor={`${step}-notes`} className="text-blue-800">Notes</Label>
+                                <Label htmlFor={`${step}-notes`} className="text-sm text-blue-800">Notes</Label>
                                 <Textarea
                                     id={`${step}-notes`}
                                     name="notes"
                                     value={formData[step].notes || ''}
                                     onChange={(e) => handleChange(e, step)}
-                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                                    className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                                     placeholder={`Notes pour le ${step}`}
                                 />
                             </div>
@@ -231,14 +231,23 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md max-h-[80vh] overflow-y-auto sm:max-h-none sm:overflow-y-visible hide-scrollbar lg:flex lg:flex-col">
-            <div className="text-center mb-6 lg:text-left">
-                <h2 className="text-3xl font-bold text-blue-900 mb-2">Configuration PC</h2>
-                <p className="text-blue-600">Étape {currentStep + 1} sur {componentOrder.length}</p>
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md lg:flex lg:flex-col relative w-full max-w-3xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto">
+            <Button
+                type="button"
+                onClick={onCancel}
+                className="absolute top-2 right-2 p-2 text-gray-500 hover:text-gray-700"
+                variant="ghost"
+            >
+                <X className="h-6 w-6" />
+                <span className="sr-only">Fermer</span>
+            </Button>
+            <div className="text-center mb-4 lg:text-left">
+                <h2 className="text-xl font-bold text-blue-900 mb-2">Configuration PC</h2>
+                <p className="text-blue-600 text-sm">Étape {currentStep + 1} sur {componentOrder.length}</p>
             </div>
-            <div className="lg:flex lg:space-x-6">
-                <div className="lg:w-1/3">
-                    <div className="flex flex-nowrap lg:flex-col justify-start gap-2 mb-6 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center hide-scrollbar">
+            <div className="lg:flex lg:space-x-4 flex-grow overflow-hidden">
+                <div className="lg:w-1/3 mb-4 lg:mb-0">
+                    <div className="flex flex-nowrap lg:flex-col justify-start gap-2 mb-4 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center lg:h-full lg:overflow-y-auto hide-scrollbar">
                         {componentOrder.map((step, index) => {
                             const Icon = componentIcons[step]
                             return (
@@ -251,33 +260,33 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                     }}
                                     ref={el => buttonRefs.current[index] = el}
                                     variant={currentStep === index ? "default" : "outline"}
-                                    className={`transition-all duration-300 flex-shrink-0 lg:w-full ${
+                                    className={`transition-all duration-300 flex-shrink-0 lg:w-full text-sm ${
                                         currentStep === index
                                             ? "bg-blue-600 text-white"
                                             : "bg-white text-blue-600 hover:bg-blue-50"
                                     }`}
                                 >
-                                    <Icon className="w-5 h-5 mr-1" />
+                                    <Icon className="w-4 h-4 mr-1" />
                                     <span className="hidden sm:inline">{step.charAt(0).toUpperCase() + step.slice(1)}</span>
                                 </Button>
                             )
                         })}
                     </div>
                 </div>
-                <div className="lg:w-2/3">
+                <div className="lg:w-2/3 lg:flex lg:flex-col lg:justify-between overflow-y-auto">
                     <AnimatePresence mode="wait">
                         {renderStep(componentOrder[currentStep])}
                     </AnimatePresence>
+                    <div className="mt-3 bg-blue-50 p-2 rounded-lg shadow-inner text-xs">
+                        <p className="text-blue-800 font-semibold text-sm">Prix total: {totalPrice.toFixed(2)} €</p>
+                        <p className="text-blue-800 font-semibold text-sm">Objectif de vente: {formData.saleTarget.toFixed(2)} €</p>
+                        <p className={`font-bold text-sm ${margin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            Marge: {margin.toFixed(2)} €
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div className="mt-6 bg-blue-50 p-4 rounded-lg shadow-inner">
-                <p className="text-blue-800 font-semibold">Prix total: {totalPrice.toFixed(2)} €</p>
-                <p className="text-blue-800 font-semibold">Objectif de vente: {formData.saleTarget.toFixed(2)} €</p>
-                <p className={`font-bold ${margin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    Marge: {margin.toFixed(2)} €
-                </p>
-            </div>
-            <div className="flex justify-between mt-8 flex-col sm:flex-row gap-4">
+            <div className="flex justify-between mt-4 flex-col sm:flex-row gap-2">
                 <Button
                     type="button"
                     onClick={prevStep}
