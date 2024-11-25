@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { PlusCircle, Trash2, Edit, ChevronDown, ChevronUp, Search, SortAsc, SortDesc, DollarSign, Cpu, HardDrive } from 'lucide-react'
+import { PlusCircle, Trash2, Edit, ChevronDown, ChevronUp, Search, SortAsc, SortDesc, Cpu, HardDrive } from 'lucide-react'
 import PCConfigForm from './pc-config-form'
 
 type Component = {
@@ -156,7 +156,7 @@ export default function PCConfigManager() {
                     <Cpu className="w-4 h-4 mr-1" /> Plus chère:
                   </span>
                                     <span className="font-semibold text-red-600">
-                    {mostExpensiveConfig ? calculateTotalPrice(mostExpensiveConfig).toFixed(2) + ' €' : 'N/A'}
+                    {mostExpensiveConfig ? calculateTotalPrice(mostExpensiveConfig) + ' €' : 'N/A'}
                   </span>
                                 </p>
                                 <p className="text-sm text-gray-400 ml-5">
@@ -167,7 +167,7 @@ export default function PCConfigManager() {
                     <HardDrive className="w-4 h-4 mr-1" /> Moins chère:
                   </span>
                                     <span className="font-semibold text-green-600">
-                    {leastExpensiveConfig ? calculateTotalPrice(leastExpensiveConfig).toFixed(2) + ' €' : 'N/A'}
+                    {leastExpensiveConfig ? calculateTotalPrice(leastExpensiveConfig)+ ' €' : 'N/A'}
                   </span>
                                 </p>
                                 <p className="text-sm text-gray-400 ml-5">
@@ -287,7 +287,7 @@ export default function PCConfigManager() {
                                 <div>
                                     <h2 className="text-xl font-semibold text-blue-900">{config.name}</h2>
                                     <p className="text-sm text-gray-500">
-                                        Prix total: {calculateTotalPrice(config).toFixed(2)} €
+                                        Prix total: {calculateTotalPrice(config)} €
                                     </p>
                                 </div>
                                 <div className="flex items-center space-x-2">
@@ -355,7 +355,7 @@ export default function PCConfigManager() {
                                             })}
                                         </div>
                                         <div className="mt-4 bg-blue-100 p-4 rounded-lg">
-                                            <p className="text-blue-900 font-semibold">Prix total: {calculateTotalPrice(config).toFixed(2)} €</p>
+                                            <p className="text-blue-900 font-semibold">Prix total: {calculateTotalPrice(config)} €</p>
                                             <p className="text-blue-900 font-semibold">Objectif de vente: {config.saleTarget.toFixed(2)} €</p>
                                             <p className={`font-bold ${config.saleTarget - calculateTotalPrice(config) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                                 Marge: {(config.saleTarget - calculateTotalPrice(config)).toFixed(2)} €
