@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import React, {useState, useEffect, useRef, ComponentState} from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -92,10 +92,10 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: keyof PCConfig) => {
         const { name, value } = e.target
         if (component && component !== 'name' && component !== 'saleTarget') {
-            setFormData(prev => ({
+            setFormData((prev: ComponentState) => ({
                 ...prev,
                 [component]: {
-                    ...prev[component],
+                    ...(prev[component] || {}), // Ensure `prev[component]` is an object
                     [name]: name === 'price' ? parseFloat(value) || 0 : value,
                 },
             }))
