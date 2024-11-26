@@ -82,7 +82,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }, [currentStep])
 
     const calculateTotalPrice = (config: PCConfig): number => {
-        return Object.entries(config).reduce((total, [key, value]) => {
+        return Object.entries(config).reduce((total, [, value]) => {
             if (typeof value === 'object' && value !== null && 'price' in value) {
                 return total + (typeof value.price === 'number' ? value.price : 0)
             }
