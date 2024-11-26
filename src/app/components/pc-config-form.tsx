@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -82,14 +82,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }, [currentStep]);
 
     const calculateTotalPrice = (config: PCConfig): number => {
-        return Object.values(config).reduce((total, component) => {
-            if (typeof component === 'object' && component !== null && 'price' in component) {
-                const price = Number((component as { price: string | number }).price);
-                return total + (isNaN(price) ? 0 : price);
-            }
-            return total;
-        }, 0) as number;
-
+        return 0;
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: string) => {
