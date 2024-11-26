@@ -35,7 +35,7 @@ type PCConfigFormProps = {
     onCancel: () => void
 }
 
-const componentOrder = ['name', 'motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard', 'saleTarget']
+const componentOrder: (keyof PCConfig)[] = ['name', 'motherboard', 'case', 'powerSupply', 'ram', 'cpu', 'ssd', 'hdd', 'graphicsCard', 'saleTarget']
 
 const componentIcons = {
     name: Tag,
@@ -50,51 +50,49 @@ const componentIcons = {
     saleTarget: DollarSign
 }
 
+const initialConfig: PCConfig = {
+    id: Date.now().toString(),
+    name: '',
+    motherboard: { name: '', price: 0 },
+    case: { name: '', price: 0 },
+    powerSupply: { name: '', price: 0 },
+    ram: { name: '', price: 0 },
+    cpu: { name: '', price: 0 },
+    ssd: { name: '', price: 0 },
+    hdd: { name: '', price: 0 },
+    graphicsCard: { name: '', price: 0 },
+    saleTarget: 0,
+}
+
 export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormProps) {
-    const [formData, setFormData] = useState<PCConfig>(
-        config || {
-            id: Date.now().toString(),
-            name: '',
-            motherboard: { name: '', price: 0 },
-            case: { name: '', price: 0 },
-            powerSupply: { name: '', price: 0 },
-            ram: { name: '', price: 0 },
-            cpu: { name: '', price: 0 },
-            ssd: { name: '', price: 0 },
-            hdd: { name: '', price: 0 },
-            graphicsCard: { name: '', price: 0 },
-            saleTarget: 0,
-        }
-    )
+    const [formData, setFormData] = useState<PCConfig>(config || initialConfig)
     const [currentStep, setCurrentStep] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [margin, setMargin] = useState(0)
-    const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+    const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
 
     useEffect(() => {
         const newTotalPrice = calculateTotalPrice(formData)
-        setTotalPrice(Number(newTotalPrice))
-        setMargin(Number(formData.saleTarget) - Number(newTotalPrice))
+        setTotalPrice(newTotalPrice)
+        setMargin(formData.saleTarget - newTotalPrice)
     }, [formData])
 
     useEffect(() => {
-        scrollToButton(currentStep);
-    }, [currentStep]);
+        scrollToButton(currentStep)
+    }, [currentStep])
 
     const calculateTotalPrice = (config: PCConfig): number => {
-        return Object.values(config).reduce((total, component) => {
-            if (typeof component === 'object' && component !== null && 'price' in component) {
-                const price = Number((component as { price: string | number }).price);
-                return total + (isNaN(price) ? 0 : price);
+        return Object.entries(config).reduce((total, [key, value]) => {
+            if (typeof value === 'object' && value !== null && 'price' in value) {
+                return total + (typeof value.price === 'number' ? value.price : 0)
             }
-            return total;
-        }, 0) as number;
-
+            return total
+        }, 0)
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: string) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: keyof PCConfig) => {
         const { name, value } = e.target
-        if (component) {
+        if (component && component !== 'name' && component !== 'saleTarget') {
             setFormData(prev => ({
                 ...prev,
                 [component]: {
@@ -119,17 +117,17 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0))
 
     const scrollToButton = (index: number) => {
-        const button = buttonRefs.current[index];
+        const button = buttonRefs.current[index]
         if (button) {
             button.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
                 inline: 'center'
-            });
+            })
         }
-    };
+    }
 
-    const renderStep = (step: string) => {
+    const renderStep = (step: keyof PCConfig) => {
         if (step === 'name') {
             return (
                 <motion.div
@@ -176,6 +174,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                 </motion.div>
             )
         } else {
+            const component = formData[step] as Component
             return (
                 <motion.div
                     key={step}
@@ -194,7 +193,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                 <Input
                                     id={`${step}-name`}
                                     name="name"
-                                    value={formData[step].name}
+                                    value={component.name}
                                     onChange={(e) => handleChange(e, step)}
                                     required
                                     className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
@@ -207,7 +206,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                     id={`${step}-price`}
                                     name="price"
                                     type="number"
-                                    value={formData[step].price}
+                                    value={component.price}
                                     onChange={(e) => handleChange(e, step)}
                                     required
                                     className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
@@ -219,7 +218,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                 <Textarea
                                     id={`${step}-notes`}
                                     name="notes"
-                                    value={formData[step].notes || ''}
+                                    value={component.notes || ''}
                                     onChange={(e) => handleChange(e, step)}
                                     className="mt-1 w-full bg-white text-blue-900 placeholder-blue-400 border-blue-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-1"
                                     placeholder={`Notes pour le ${step}`}
@@ -263,7 +262,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                     ref={(el: HTMLButtonElement | null) => {
                                         buttonRefs.current[index] = el
                                     }}
-                                    variant={currentStep === index ? ("default" as const) : ("outline" as const)}
+                                    variant={currentStep === index ? "default" : "outline"}
                                     className={`transition-all duration-300 flex-shrink-0 lg:w-full text-sm ${
                                         currentStep === index
                                             ? "bg-blue-600 text-white"
