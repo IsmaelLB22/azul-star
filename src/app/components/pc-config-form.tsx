@@ -92,20 +92,24 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: keyof PCConfig) => {
         const { name, value } = e.target
-        if (component && component !== 'name' && component !== 'saleTarget') {
-            setFormData(prev => ({
-                ...prev,
-                [component]: {
-                    ...prev[component],
-                    [name]: name === 'price' ? parseFloat(value) || 0 : value,
-                },
-            }))
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: name === 'saleTarget' ? parseFloat(value) || 0 : value,
-            }))
-        }
+
+        setFormData(prev => {
+            if (component && component !== 'name' && component !== 'saleTarget') {
+                const componentData = prev[component] as Component
+                return {
+                    ...prev,
+                    [component]: {
+                        ...componentData,
+                        [name]: name === 'price' ? parseFloat(value) || 0 : value,
+                    },
+                }
+            } else {
+                return {
+                    ...prev,
+                    [name]: name === 'saleTarget' ? parseFloat(value) || 0 : value,
+                }
+            }
+        })
     }
 
     const handleSubmit = (e: React.FormEvent) => {
