@@ -82,13 +82,12 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
     }, [currentStep])
 
     const calculateTotalPrice = (config: PCConfig): number => {
-        return Object.entries(config).reduce((total, [, value]) => {
-            if (typeof value === 'object' && value !== null && 'price' in value) {
-                return total + (typeof value.price === 'number' ? value.price : 0)
-            }
-            return total
-        }, 0)
-    }
+        return Object.values(config)
+            .filter((value): value is Component => typeof value === "object" && value !== null && "price" in value)
+            .reduce((total, component) => total + component.price, 0);
+    };
+
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, component?: keyof PCConfig) => {
         const { name, value } = e.target
@@ -262,7 +261,7 @@ export default function PCConfigForm({ config, onSave, onCancel }: PCConfigFormP
                                     ref={(el: HTMLButtonElement | null) => {
                                         buttonRefs.current[index] = el
                                     }}
-                                    variant={currentStep === index ? "default" : "outline"}
+                                    variant={currentStep === index ? "default" : "outline" as "default" | "outline"}
                                     className={`transition-all duration-300 flex-shrink-0 lg:w-full text-sm ${
                                         currentStep === index
                                             ? "bg-blue-600 text-white"
